@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Flower Check</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-image: url('background.avif'); /* Ensure the path matches */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 48px;
+            color: #ff69b4;
+        }
+        p {
+            font-size: 32px;
+            color: #333;
+        }
+        button {
+            font-size: 24px;
+            margin: 10px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 20px;
+            background-color: #ffb6c1;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff69b4;
+        }
+        #flowerContainer {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .flower {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        .visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .flower-name {
+            position: absolute; /* Position the text absolutely */
+            bottom: 10px; /* Position at the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background for better visibility */
+            padding: 5px; /* Add some padding */
+            border-radius: 5px; /* Optional: rounded corners for text background */
+        }
+        #celebrationImages {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .celebration-image {
+            width: 300px; /* Set the width to a large size */
+            height: auto; /* Maintain aspect ratio */
+            margin: 10px;
+            border-radius: 15px; /* Optional: rounded corners */
+        }
+        #finalMessage {
+            display: none;
+            font-size: 48px;
+            font-family: 'Brush Script MT', cursive;
+            color: #ff69b4;
+            margin-top: 20px;
+        }
+        #wrongFlowerResponse {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Is this your favorite flower?</h1>
+    <div id="flowerContainer">
+        <div class="flower visible" style="background-image: url('Rose.jfif')">
+            <div class="flower-name">Rose</div>
+        </div>
+        <div class="flower" style="background-image: url('Lily.jpg')">
+            <div class="flower-name">Lily</div>
+        </div>
+        <div class="flower" style="background-image: url('Daisy.jpg')">
+            <div class="flower-name">Daisy</div>
+        </div>
+        <div class="flower" style="background-image: url('Orchid.jpg')">
+            <div class="flower-name">Orchid</div>
+        </div>
+        <div class="flower" style="background-image: url('Sunflower.jpg')">
+            <div class="flower-name">Sunflower</div>
+        </div>
+        <div class="flower" style="background-image: url('blue tulips.gif')">
+            <div class="flower-name">Tulips</div>
+        </div>
+    </div>
+    
+    <div>
+        <button id="yesButton" onclick="checkFlower(true)">Yes</button>
+        <button id="noButton" onclick="checkFlower(false)">No</button>
+    </div>
+
+    <div id="wrongFlowerResponse">
+        <p>That is not your favorite flower, Glyssa! Try again!!!</p>
+    </div>
+
+    <div id="finalMessage">
+        <p>To Glyssa Gay Casquejo, This code is for you :))</p>
+    </div>
+
+    <div id="celebrationImages">
+        <img src="Doggo.jpg" alt="Celebration Image 1" class="celebration-image">
+        <img src="GradGly.jpg" alt="Celebration Image 2" class="celebration-image">
+        <img src="OA.jfif" alt="Celebration Image 3" class="celebration-image">
+    </div>
+
+    <audio id="backgroundMusic" src="your-background-music-url.mp3" loop autoplay></audio>
+
+    <script>
+        const flowers = [
+            "rose.jpg",
+            "lily.jpg",
+            "daisy.jpg",
+            "orchid.jpg",
+            "sunflower.jpg",
+            "tulips.gif"
+        ];
+        let currentFlowerIndex = 0;
+
+        function checkFlower(isYes) {
+            const responseDiv = document.getElementById("wrongFlowerResponse");
+            const finalMessageDiv = document.getElementById("finalMessage");
+            const celebrationImages = document.getElementById("celebrationImages");
+            const noButton = document.getElementById("noButton");
+            
+            responseDiv.style.display = "none";
+            finalMessageDiv.style.display = "none";
+            celebrationImages.style.display = "none";
+
+            if (isYes && currentFlowerIndex === flowers.length - 1) {
+                alert("Yes, Tulips is your favorite flower!");
+                finalMessageDiv.style.display = "block";
+
+                setTimeout(() => {
+                    celebrationImages.style.display = "block";
+                }, 10000);
+                return;
+            }
+
+            if (isYes) {
+                responseDiv.style.display = "block";
+                return;
+            }
+
+            currentFlowerIndex++;
+
+            if (currentFlowerIndex < flowers.length) {
+                const flowerDivs = document.querySelectorAll(".flower");
+                flowerDivs.forEach((flower, index) => {
+                    flower.classList.remove("visible");
+                });
+
+                flowerDivs[currentFlowerIndex].classList.add("visible");
+            } else {
+                alert("No more flowers to check!");
+            }
+
+            if (currentFlowerIndex === flowers.length - 1) {
+                noButton.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
